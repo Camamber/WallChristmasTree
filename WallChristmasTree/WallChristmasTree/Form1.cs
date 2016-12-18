@@ -14,7 +14,13 @@ namespace WallChristmasTree
     {
         public Form1()
         {
+            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
             InitializeComponent();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
