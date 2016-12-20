@@ -10,6 +10,12 @@ namespace WallChristmasTree
     {
        public const string token = "a3073a9dcbc855d50cad6edaad8b09447376819d6841ec768ea85b14ce15590fb4cd439d491a36fd1480b";
     }
+
+
+
+    /// <summary>
+    /// Likes.Get
+    /// </summary>
     public class Profiles
     {
         public string type { get; set; }
@@ -34,6 +40,11 @@ namespace WallChristmasTree
         public ResponseLikes response { get; set; }
     }
 
+
+
+    /// <summary>
+    /// photo.GetUploadServer
+    /// </summary>
     public class UpServerResponse
     {
         public string upload_url { get; set; }
@@ -46,6 +57,11 @@ namespace WallChristmasTree
         public UpServerResponse response { get; set; }
     }
 
+
+
+    /// <summary>
+    /// Post request upload photo
+    /// </summary>
     public class UploadedPhoto
     {
         public int server { get; set; }
@@ -53,6 +69,12 @@ namespace WallChristmasTree
         public int aid { get; set; }
         public string hash { get; set; }
     }
+
+
+
+    /// <summary>
+    /// photo.save
+    /// </summary>
     public class ResponseInf
     {
         public int id { get; set; }
@@ -70,5 +92,22 @@ namespace WallChristmasTree
     public class PhotoInformation
     {
         public List<ResponseInf> response { get; set; }
+    }
+
+
+    /// <summary>
+    /// User.Get
+    /// </summary>
+    public class User
+    {
+        public int id { get; set; }
+        public string first_name { get; set; }
+        public string last_name { get; set; }
+        public string photo_200 { get; set; }
+    }
+
+    public class UserObject
+    {
+        public List<User> response { get; set; }
     }
 }

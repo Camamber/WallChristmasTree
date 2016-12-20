@@ -6,15 +6,29 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Net;
+using Newtonsoft.Json;
 
 namespace WallChristmasTree
 {
     class Balls
     {
         Bitmap bImage;
-        public Balls(Profiles user)
+        Bitmap face;
+        UserObject userobj;
+        public Balls(Profiles profile)
         {
-            bImage = new Bitmap("E:\\2.png");
+            using(WebClient wc = new WebClient())
+            {
+                userobj = JsonConvert.DeserializeObject<UserObject>(wc.DownloadString(String.Format("https://api.vk.com/method/users.get?users_id={1}&access_token={0}&v=5.60", Resources.token, profile.id)));
+                MemoryStream ms = new MemoryStream(wc.DownloadData(userobj.response[0].photo_200));
+                face = new Bitmap(ms);
+            }              
+        }
+
+        void CreateBall()
+        {
+
         }
 
         public string Image
