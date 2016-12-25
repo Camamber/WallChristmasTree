@@ -15,6 +15,7 @@ namespace WallChristmasTree
     {
         Bitmap bImage;
         Bitmap face;
+        Bitmap ball;
         UserObject userobj;
         public Balls(Profiles profile)
         {
@@ -24,11 +25,46 @@ namespace WallChristmasTree
                 MemoryStream ms = new MemoryStream(wc.DownloadData(userobj.response[0].photo_200));
                 face = new Bitmap(ms);
             }              
+            if(face!=null&&ball!=null)
+            {
+                CreateBall();
+            }
         }
 
-        void CreateBall()
+        Bitmap CreateBall()
+        {
+            Bitmap res = (Bitmap)ball.Clone();
+
+            for (int i = 28; i < face.Width+28; i++)
+            {
+                for (int j = 833; j < face.Height+833; j++)
+                {
+                    Color clr = face.GetPixel(i, j);
+                    if (clr.A ==0)
+                    {
+                        int R = convSoftLight(face.GetPixel(i, j).R, ball.GetPixel(i, j).R);
+                        int G = convSoftLight(face.GetPixel(i, j).G, ball.GetPixel(i, j).G);
+                        int B = convSoftLight(face.GetPixel(i, j).B, ball.GetPixel(i, j).B);
+                        bImage.SetPixel(i, j, Color.FromArgb(R, G, B));
+                    }
+                }
+            }
+            return res;
+        }
+
+        int convSoftLight(int A, int B)
         {
 
+            float a = (float)A / 255;
+            float b = (float)B / 255;
+            float result = 0;
+
+            if (b < 0.5)
+                result = (float)(2 * a * b + Math.Pow(a, 2) * (1 - 2 * b));
+            else
+                result = (float)(2 * a * (1 - b) + Math.Sqrt(a) * (2 * b - 1));
+
+            return (int)(255 * result);
         }
 
         public string Image
