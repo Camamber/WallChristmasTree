@@ -41,7 +41,7 @@ namespace WallChristmasTree
             using (WebClient wc = new WebClient())
             {
                 UploadServer uploadServer = JsonConvert.DeserializeObject<UploadServer>(wc.DownloadString(String.Format("https://api.vk.com/method/photos.getUploadServer?album_id=239545490&access_token={0}&v=5.60", Resources.token)));
-                UploadedPhoto uploadedPhoto = JsonConvert.DeserializeObject<UploadedPhoto>(Encoding.ASCII.GetString(wc.UploadFile(uploadServer.response.upload_url, ball.Image)));
+                UploadedPhoto uploadedPhoto = JsonConvert.DeserializeObject<UploadedPhoto>(Encoding.ASCII.GetString(wc.UploadFile(uploadServer.response.upload_url, ball.SaveImage)));
                 PhotoInformation image = JsonConvert.DeserializeObject<PhotoInformation>(wc.DownloadString(string.Format("https://api.vk.com/method/photos.save?album_id=239545490&photos_list={1}&server={2}&hash={3}&v=5.37&access_token={0}", Resources.token, uploadedPhoto.photos_list, uploadedPhoto.server, uploadedPhoto.hash)));
                 string attachment = String.Format("photo{0}_{1}", image.response[0].owner_id, image.response[0].id);
                 string messages = String.Format("*id{0} ({1}), Этот шарик я сделал специально для тебя, я старался(не забывай, я всего лишь машина). Теперь и ты есть на моей елочке. Надеюсь тебе понравилось😌. С наступающим тебя!!!🍊🍷🍸🎁🎅🎄🌟", user.id, user.first_name);
@@ -49,16 +49,13 @@ namespace WallChristmasTree
             }
         }
 
-        public void EditPhoto(Tree tree)
+        public void AddPhoto(Tree tree)
         {
             using (WebClient wc = new WebClient())
             {
                 UploadServer uploadServer = JsonConvert.DeserializeObject<UploadServer>(wc.DownloadString(String.Format("https://api.vk.com/method/photos.getUploadServer?album_id=239545490&access_token={0}&v=5.60", Resources.token)));
-                UploadedPhoto uploadedPhoto = JsonConvert.DeserializeObject<UploadedPhoto>(Encoding.ASCII.GetString(wc.UploadFile(uploadServer.response.upload_url, tree.Image)));
-                PhotoInformation image = JsonConvert.DeserializeObject<PhotoInformation>(wc.DownloadString(string.Format("https://api.vk.com/method/photos.save?album_id=239545490&photos_list={1}&server={2}&hash={3}&v=5.37&access_token={0}", Resources.token, uploadedPhoto.photos_list, uploadedPhoto.server, uploadedPhoto.hash)));
-                string attachment = String.Format("photo{0}_{1}", image.response[0].owner_id, image.response[0].id);
-                string messages = "";
-                wc.DownloadString(String.Format("https://api.vk.com/method/wall.edit?owner_id={0}&post_id={1}&messages={2}&attachments={3}&access_token={4}&v=5.60", owner_id, post_id, messages, attachment, Resources.token));
+                UploadedPhoto uploadedPhoto = JsonConvert.DeserializeObject<UploadedPhoto>(Encoding.ASCII.GetString(wc.UploadFile(uploadServer.response.upload_url, tree.ImageT)));
+                PhotoInformation image = JsonConvert.DeserializeObject<PhotoInformation>(wc.DownloadString(string.Format("https://api.vk.com/method/photos.save?album_id=239545490&photos_list={1}&server={2}&hash={3}&v=5.37&access_token={0}", Resources.token, uploadedPhoto.photos_list, uploadedPhoto.server, uploadedPhoto.hash)));                            
             }
         }
     }

@@ -8,44 +8,63 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using Newtonsoft.Json;
+using System.Drawing.Drawing2D;
 
 namespace WallChristmasTree
 {
     class Balls
     {
+        Random rnd = new Random();
         Bitmap bImage;
         Bitmap face;
         Bitmap ball;
         UserObject userobj;
         public Balls(Profiles profile)
         {
-            using(WebClient wc = new WebClient())
+            using (WebClient wc = new WebClient())
             {
                 userobj = JsonConvert.DeserializeObject<UserObject>(wc.DownloadString(String.Format("https://api.vk.com/method/users.get?users_id={1}&access_token={0}&v=5.60", Resources.token, profile.id)));
                 MemoryStream ms = new MemoryStream(wc.DownloadData(userobj.response[0].photo_200));
                 face = new Bitmap(ms);
-            }              
-            if(face!=null&&ball!=null)
-            {
-                CreateBall();
             }
+            if (profile.id == 88589595)
+                ball = new Bitmap(@"\source\3.png");
+            else
+                ball = new Bitmap(String.Format(@"\source\{0}.png", rnd.Next(1, 6)));
+           
+            if (face != null && ball != null)
+            {
+                bImage = CreateBall();
+            }        
+        }
+
+        public Balls()
+        {
+            Image Tmpimg = Image.FromFile(@"C:\Users\Egerb\Desktop\mega super ruly\pB0RrwxZlRo.jpg");
+            face = CropToCircle(new Bitmap(Tmpimg, 920, 920), Color.Transparent);
+            face.Save("face.png", ImageFormat.Png);
+            ball = new Bitmap(@"C:\Users\Egerb\Desktop\mega super ruly\1.png");
+            bImage = CreateBall();
+            string g = SaveImage;
+            
         }
 
         Bitmap CreateBall()
         {
             Bitmap res = (Bitmap)ball.Clone();
 
-            for (int i = 28; i < face.Width+28; i++)
+            for (int i = 22; i < face.Width+22; i++)
             {
-                for (int j = 833; j < face.Height+833; j++)
+                for (int j = 829; j < face.Height + 829; j++)
                 {
-                    Color clr = face.GetPixel(i, j);
-                    if (clr.A ==0)
+                    Color clr = face.GetPixel(i - 22, j - 829);
+                    if (clr.A !=0)
                     {
-                        int R = convSoftLight(face.GetPixel(i, j).R, ball.GetPixel(i, j).R);
-                        int G = convSoftLight(face.GetPixel(i, j).G, ball.GetPixel(i, j).G);
-                        int B = convSoftLight(face.GetPixel(i, j).B, ball.GetPixel(i, j).B);
-                        bImage.SetPixel(i, j, Color.FromArgb(R, G, B));
+                        int R = convSoftLight(face.GetPixel(i - 22, j - 829).R, ball.GetPixel(i, j).R);
+                        int G = convSoftLight(face.GetPixel(i - 22, j - 829).G, ball.GetPixel(i, j).G);
+                        int B = convSoftLight(face.GetPixel(i - 22, j - 829).B, ball.GetPixel(i, j).B);
+                        res.SetPixel(i, j, Color.FromArgb(R, G, B));
+                   
                     }
                 }
             }
@@ -67,7 +86,23 @@ namespace WallChristmasTree
             return (int)(255 * result);
         }
 
-        public string Image
+        public static Bitmap CropToCircle(Image srcImage, Color backGround)
+        {
+            Bitmap dstImage = new Bitmap(srcImage.Width, srcImage.Height, srcImage.PixelFormat);
+            Graphics g = Graphics.FromImage(dstImage);
+            using (Brush br = new SolidBrush(backGround))
+            {
+                g.FillRectangle(br, 0, 0, dstImage.Width, dstImage.Height);
+            }
+            GraphicsPath path = new GraphicsPath();
+            path.AddEllipse(0, 0, dstImage.Width, dstImage.Height);
+            g.SetClip(path);
+            g.DrawImage(srcImage, 0, 0);
+
+            return dstImage;
+        }
+
+        public string SaveImage
         {
             get
             {

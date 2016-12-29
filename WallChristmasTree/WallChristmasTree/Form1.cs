@@ -42,7 +42,8 @@ namespace WallChristmasTree
 
         private void button1_Click(object sender, EventArgs e)
         {
-            timer1.Start();
+            new Balls();
+            //timer1.Start();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -53,8 +54,10 @@ namespace WallChristmasTree
                 if(!worked.items.Contains(user))
                 {
                     Balls ball = new Balls(user);
+                    Tree tree = new Tree(user);
                     //Редачим Ёлку
                     wallPost.CreateComment(user, ball);
+                    wallPost.AddPhoto(tree);
                     worked.items.Add(user);
                     Serialize();
                 }
