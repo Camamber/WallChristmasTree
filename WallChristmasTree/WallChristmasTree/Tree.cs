@@ -14,9 +14,12 @@ namespace WallChristmasTree
     {
         Point xy;
         Bitmap bImage;
+        Bitmap tree;
 
         public Tree(Profiles user)
         {
+            File.Replace("tmpT.png", "Tree.png", "Backup.png");
+            tree = new Bitmap("Tree.png");
             string[] tmp;
             if (user.id == 88589595)
                 xy = new Point(745, 518);
@@ -26,15 +29,15 @@ namespace WallChristmasTree
                 {
                     tmp = sr.ReadToEnd().Split('\n');
 
-                    xy = new Point(int.Parse(tmp[0].Split(',')[0]), int.Parse(tmp[1].Split(',')[0]));
+                    xy = new Point(int.Parse(tmp[0].Split(',')[0]), int.Parse(tmp[1].Split(',')[1]));
 
                 }
                 using (StreamWriter sw = new StreamWriter("point.txt"))
                 {
                     string s = "";
-                    for (int i = 1; i < tmp.Length; i++)
+                    for (int i = 1; i < tmp.Length-1; i++)
                     {
-                        s += tmp[0] + "\n";
+                        s += tmp[i] + "\n";
                     }
                     sw.Write(s);
                 }
@@ -44,8 +47,9 @@ namespace WallChristmasTree
 
         Bitmap CreateTree()
         {
-            Bitmap bmp = new Bitmap("Tree.png");
-            Bitmap ball = new Bitmap(Image.FromFile("tmpT.png"), 137, 250);
+            Bitmap bmp = (Bitmap)tree.Clone();
+            tree.Dispose();
+            Bitmap ball = new Bitmap(Image.FromFile("tmp.png"), 137, 250);
             for (int i = xy.X; i < xy.X + 137; i++)
             {
                 for (int j = xy.Y; j < xy.Y + 250; j++)
@@ -64,8 +68,10 @@ namespace WallChristmasTree
         {
             get
             {
-                bImage.Save("Tree.png", ImageFormat.Png);
-                return "Tree.png";
+                bImage.Save("tmpT.png", ImageFormat.Png);
+                bImage.Dispose();
+                tree.Dispose();
+                return "tmpT.png";
             }
         }
     }

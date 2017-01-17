@@ -42,7 +42,7 @@
             this.listBox1.FormattingEnabled = true;
             this.listBox1.Location = new System.Drawing.Point(0, 0);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(219, 372);
+            this.listBox1.Size = new System.Drawing.Size(219, 373);
             this.listBox1.TabIndex = 0;
             // 
             // button1
@@ -70,14 +70,14 @@
             // 
             // timer1
             // 
-            this.timer1.Interval = 30000;
+            this.timer1.Interval = 300000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(510, 372);
+            this.ClientSize = new System.Drawing.Size(510, 373);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.listBox1);

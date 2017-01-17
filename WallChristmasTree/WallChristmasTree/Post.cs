@@ -21,7 +21,7 @@ namespace WallChristmasTree
             List<Profiles> users = new List<Profiles>();
             using (WebClient wc = new WebClient())
             {
-                LikeObject likes = JsonConvert.DeserializeObject<LikeObject>(wc.DownloadString(String.Format("https://api.vk.com/method/likes.getList?type=post&owner_id={0}&item_id={1}&extended=1&access_token={2}&v=5.60", owner_id, post_id, Resources.token)));
+                LikeObject likes = JsonConvert.DeserializeObject<LikeObject>(Encoding.UTF8.GetString(wc.DownloadData(String.Format("https://api.vk.com/method/likes.getList?type=post&owner_id={0}&item_id={1}&extended=1&access_token={2}&v=5.60", owner_id, post_id, Resources.token))));
                 users = likes.response.items;
             }
             return users;
@@ -31,7 +31,7 @@ namespace WallChristmasTree
         {
             using (WebClient wc = new WebClient())
             {
-              string s = wc.DownloadString(String.Format("https://api.vk.com/method/wall.createComment?owner_id={0}&post_id={1}&messages={2}&attachments={3}&access_token={4}&v=5.60", owner_id, post_id, msg, attachment, Resources.token));
+              string s = wc.DownloadString(String.Format("https://api.vk.com/method/wall.createComment?owner_id={0}&post_id={1}&message={2}&attachments={3}&access_token={4}&v=5.60", owner_id, post_id, msg, attachment, Resources.token));
             }
             return true;
         }

@@ -23,14 +23,17 @@ namespace WallChristmasTree
         {
             using (WebClient wc = new WebClient())
             {
-                userobj = JsonConvert.DeserializeObject<UserObject>(wc.DownloadString(String.Format("https://api.vk.com/method/users.get?users_id={1}&access_token={0}&v=5.60", Resources.token, profile.id)));
+                userobj = JsonConvert.DeserializeObject<UserObject>(wc.DownloadString(String.Format("https://api.vk.com/method/users.get?user_id={1}&fields=photo_200&access_token={0}&v=5.60", Resources.token, profile.id)));
                 MemoryStream ms = new MemoryStream(wc.DownloadData(userobj.response[0].photo_200));
-                face = new Bitmap(ms);
+                face = CropToCircle(new Bitmap(Image.FromStream(ms), 920, 920), Color.Transparent);
             }
             if (profile.id == 88589595)
-                ball = new Bitmap(@"\source\3.png");
+                ball = new Bitmap(@"source\3.png");
             else
-                ball = new Bitmap(String.Format(@"\source\{0}.png", rnd.Next(1, 6)));
+            {
+                string path = String.Format(@"source\{0}.png", rnd.Next(1, 6));
+                ball = new Bitmap(path);
+            }
            
             if (face != null && ball != null)
             {

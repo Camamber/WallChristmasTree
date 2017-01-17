@@ -26,7 +26,7 @@ namespace WallChristmasTree
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            wallPost = new Post("1047", "63026589");
+            wallPost = new Post("1065", "63026589");
             if (File.Exists("Liked.json"))
             {
                 using (StreamReader sr = new StreamReader("Liked.json"))
@@ -42,27 +42,45 @@ namespace WallChristmasTree
 
         private void button1_Click(object sender, EventArgs e)
         {
-            new Balls();
-            //timer1.Start();
+
+            timer1.Start();
+            //timer1_Tick(null, null);
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+            List<int> ls = new List<int>();
+            foreach (Profiles user2 in worked.items)
+                ls.Add(user2.id);
             List<Profiles> likes = wallPost.GetLikes();
-            foreach(Profiles user in likes)
+            foreach (Profiles user in likes)
             {
-                if(!worked.items.Contains(user))
+
+                if (!ls.Contains(user.id))
                 {
                     Balls ball = new Balls(user);
-                    Tree tree = new Tree(user);
-                    //Редачим Ёлку
                     wallPost.CreateComment(user, ball);
-                    wallPost.AddPhoto(tree);
+                    if (likes.Count < 25)
+                    {
+                        Tree tree = new Tree(user);
+                        wallPost.AddPhoto(tree);
+                    }
+                    else if (user.id == 88589595)
+                    {
+                        Tree tree = new Tree(user);
+                        wallPost.AddPhoto(tree);
+
+                    }
+                    //Редачим Ёлку
+
+
                     worked.items.Add(user);
                     Serialize();
+                    break;
                 }
-            }
+            }          
         }
+        
 
         void Serialize()
         {
